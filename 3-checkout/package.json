@@ -4,7 +4,7 @@
   "description": "A multipart form implementation in React.js and Express.js",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server/index.js",
     "react:dev": "npx babel client --out-dir public --presets @babel/preset-react --ignore=node_modules,public --source-maps inline --watch",
     "react": "npx babel client --out-dir public --presets @babel/preset-react --ignore=node_modules,public --source-maps inline"
   },
@@ -12,7 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.10.12",
+    "prettier": "^2.1.2",
     "react": "^16.10.1",
     "react-dom": "^16.10.1"
   },
