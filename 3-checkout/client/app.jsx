@@ -7,6 +7,7 @@ class App extends React.Component {
       form2: false,
       form3: false,
       confirmation: false,
+      finalPage: false,
       name: '',
       email: '',
       password: '',
@@ -29,6 +30,10 @@ class App extends React.Component {
     this.openForm2 = this.openForm2.bind(this);
     this.openForm3 = this.openForm3.bind(this);
     this.confirmation = this.confirmation.bind(this);
+    this.update = this.update.bind(this);
+    this.saveDb = this.saveDb.bind(this);
+    // this.resetState = this.resetState.bind(this);
+    // this.toFinalPage = this.toFinalPage.bind(this);
   }
 
   openForm1(event) {
@@ -39,7 +44,6 @@ class App extends React.Component {
   openForm2(event) {
     event.preventDefault()
     this.setState({form1: false, form2: true})
-    console.log(this.state)
   }
 
   openForm3(event) {
@@ -51,6 +55,67 @@ class App extends React.Component {
     event.preventDefault()
     this.setState({form3: false, confirmation: true});
   }
+
+  toFinalPage(event) {
+    event.preventDefault()
+    this.setState({confirmation: false, finalPage: true})
+  }
+
+  update(event) {
+    event.preventDefault()
+    this.setState({[event.target.name]: event.target.value})
+  }
+
+  saveDb() {
+    axios.post('/checkout', {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      address: [{
+        line1: this.state.line1,
+        line2: this.state.line2,
+        city: this.state.city,
+        state: this.state.state,
+        zipcode: this.state.zipcode
+      }],
+      phoneNumber: this.state.phoneNumber,
+      creditCard: this.state.creditCard,
+      expiryDate: this.state.expiryDate,
+      cvv: this.state.cvv,
+      billingZip: this.state.billingZip 
+    })
+    .then((response) => {console.log(response)})
+    .catch((error) => {console.log('Error with POST request: ', error)})
+  }
+  
+  // resetState(event) {
+  //   event.preventDefault()
+  //   this.setState({
+  //     checkout: true,
+  //     form1: false,
+  //     form2: false,
+  //     form3: false,
+  //     confirmation: false,
+  //     finalPage: false,
+  //     name: '',
+  //     email: '',
+  //     password: '',
+  //     address: [
+  //       {
+  //         line1: '',
+  //         line2: '',
+  //         city: '',
+  //         state: '',
+  //         zipcode: '',
+  //       }
+  //     ],
+  //     phoneNumber: '',
+  //     creditCard: '',
+  //     expiryDate: '',
+  //     cvv: '',
+  //     billinZip: ''
+  //   })
+  // }
 
   render() {
     if (this.state.checkout) {
@@ -65,11 +130,11 @@ class App extends React.Component {
         <div className='container'>
           <h1>Form 1</h1>
           <form>
-            <input type='text' name='name' placeholder='Name'/>
+            <input key='1' type='text' name='name' placeholder='Name' onChange={this.update}/>
             <br />
-            <input type='text' name='email' placeholder='Email'/>
+            <input key='2' type='text' name='email' placeholder='Email' onChange={this.update}/>
             <br />
-            <input type='text' name='password' placeholder='Password'/>
+            <input key='3' type='text' name='password' placeholder='Password' onChange={this.update}/>
           </form>
           <button onClick={this.openForm2}>Next</button>
         </div>
@@ -79,15 +144,15 @@ class App extends React.Component {
         <div className='container'>
           <h1>Form 2</h1>
           <form>
-            <input type='text' name='line1' placeholder='Address Line 1'/>
+            <input key='4' type='text' name='line1' placeholder='Address Line 1' onChange={this.update}/>
             <br />
-            <input type='text' name='line2' placeholder='Address Line 2'/>
+            <input key='5' type='text' name='line2' placeholder='Address Line 2' onChange={this.update}/>
             <br />
-            <input type='text' name='city' placeholder='City'/>
+            <input key='6' type='text' name='city' placeholder='City' onChange={this.update}/>
             <br />
-            <input type='text' name='state' placeholder='State'/>
+            <input key='7' type='text' name='state' placeholder='State' onChange={this.update}/>
             <br />
-            <input type='text' name='zipcode' placeholder='Zip Code'/>
+            <input key='8' type='text' name='zipcode' placeholder='Zip Code' onChange={this.update}/>
           </form>
           <button onClick={this.openForm3}>Next</button>
         </div>
@@ -97,18 +162,17 @@ class App extends React.Component {
         <div className='container'>
           <h1>Form 3</h1>
           <form>
-            <input type='text' name='phoneNumber' placeholder='Phone Number'/>
+            <input key='9' type='text' name='phoneNumber' placeholder='Phone Number' onChange={this.update}/>
             <br />
-            <input type='text' name='creditCard' placeholder='Credit Card'/>
+            <input key='10' type='text' name='creditCard' placeholder='Credit Card' onChange={this.update}/>
             <br />
-            <input type='text' name='expiryDate' placeholder='Expiration Date'/>
+            <input key='11' type='text' name='expiryDate' placeholder='Expiration Date' onChange={this.update}/>
             <br />
-            <input type='text' name='cvv' placeholder='CVV'/>
+            <input key='12' type='text' name='cvv' placeholder='CVV' onChange={this.update}/>
             <br />
-            <input type='text' name='billingZip' placeholder='Billing Zip'/>
+            <input key='13' type='text' name='billingZip' placeholder='Billing Zip' onChange={this.update}/>
           </form>
           <button onClick={this.confirmation}>Next </button>
-          {/* The function here will send you to the confirmation page */}
         </div>
       )
     } else if (this.state.confirmation) {
@@ -130,11 +194,14 @@ class App extends React.Component {
             <li>CVV: {this.state.cvv}</li>
             <li>Billing ZipCode: {this.state.billingZip}</li>
           </ul>
-          {/* The function here will send a post request to store info in database */}
-          {/* The function here will bring you back to home page and set state back to default */}
+          <button onClick={this.saveDb} onClick={this.toFinalPage}>Submit</button>
         </div>
+      )       
+    } else if (this.state.finalPage) {
+      return (
+        <button onClick={this.resetState}>Return to Home Page</button>
       )
-    } 
+    }
   }
 }
 
