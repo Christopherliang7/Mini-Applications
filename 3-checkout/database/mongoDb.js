@@ -24,7 +24,7 @@ const infoSchema = new mongoose.Schema({
   expiryDate: String,
   cvv: String,
   billingZip: String
-})
+});
 
 const Customer = mongoose.model('Customer', infoSchema)
 
@@ -52,5 +52,5 @@ const save = (customer) => {
   );
 };
 
-module.exports = {save};
+module.exports = { save };
 
