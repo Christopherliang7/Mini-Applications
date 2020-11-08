@@ -32,8 +32,8 @@ class App extends React.Component {
     this.confirmation = this.confirmation.bind(this);
     this.update = this.update.bind(this);
     this.saveDb = this.saveDb.bind(this);
-    // this.resetState = this.resetState.bind(this);
-    // this.toFinalPage = this.toFinalPage.bind(this);
+    this.resetState = this.resetState.bind(this);
+    this.toFinalPage = this.toFinalPage.bind(this);
   }
 
   openForm1(event) {
@@ -88,34 +88,34 @@ class App extends React.Component {
     .catch((error) => {console.log('Error with POST request: ', error)})
   }
   
-  // resetState(event) {
-  //   event.preventDefault()
-  //   this.setState({
-  //     checkout: true,
-  //     form1: false,
-  //     form2: false,
-  //     form3: false,
-  //     confirmation: false,
-  //     finalPage: false,
-  //     name: '',
-  //     email: '',
-  //     password: '',
-  //     address: [
-  //       {
-  //         line1: '',
-  //         line2: '',
-  //         city: '',
-  //         state: '',
-  //         zipcode: '',
-  //       }
-  //     ],
-  //     phoneNumber: '',
-  //     creditCard: '',
-  //     expiryDate: '',
-  //     cvv: '',
-  //     billinZip: ''
-  //   })
-  // }
+  resetState(event) {
+    event.preventDefault()
+    this.setState({
+      checkout: true,
+      form1: false,
+      form2: false,
+      form3: false,
+      confirmation: false,
+      finalPage: false,
+      name: '',
+      email: '',
+      password: '',
+      address: [
+        {
+          line1: '',
+          line2: '',
+          city: '',
+          state: '',
+          zipcode: '',
+        }
+      ],
+      phoneNumber: '',
+      creditCard: '',
+      expiryDate: '',
+      cvv: '',
+      billinZip: ''
+    })
+  }
 
   render() {
     if (this.state.checkout) {
